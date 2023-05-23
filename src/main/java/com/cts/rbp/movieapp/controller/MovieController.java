@@ -11,15 +11,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cts.rbp.movieapp.exception.MoviesNotFound;
 import com.cts.rbp.movieapp.model.Movie;
 import com.cts.rbp.movieapp.repository.MovieRepository;
 import com.cts.rbp.movieapp.services.MovieService;
 
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("api/v1.0/moviebooking")
-@Slf4j
+@RequestMapping("/api/v1.0/moviebooking")
 public class MovieController {
 
 	@Autowired
@@ -32,10 +34,9 @@ public class MovieController {
 	@GetMapping("/all")
 	public ResponseEntity<List<Movie>> getAllMovies(){
 		List<Movie> movieList = movieRepo.findAll();
-		
 		if(movieList.isEmpty()) {
-			System.out.println("Empty list");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
+			throw new MoviesNotFound("No Movies Found");
 		}
 		else {
 			return new ResponseEntity<>(movieList,HttpStatus.FOUND);
@@ -45,6 +46,11 @@ public class MovieController {
 	@PostMapping("/add")
 	public ResponseEntity addMovie(@RequestBody Movie movie){
 		
+		List<Movie> movieList=movieService.getAllMovies();
+		
+		if(movieList.isEmpty()) {
+			
+		}
 		movieService.saveMovie(movie);
 		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}

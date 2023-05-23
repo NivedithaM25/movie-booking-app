@@ -58,6 +58,52 @@ public class Movie {
 	public Movie() {
 		super();
 	}
+
+	@Override
+	public String toString() {
+		return "Movie [id=" + id + ", movieName=" + movieName + ", theaterName=" + theaterName
+				+ ", noOfTicketsAvailable=" + noOfTicketsAvailable + ", ticketStatus=" + ticketStatus + "]";
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getMovieName() {
+		return movieName;
+	}
+
+	public void setMovieName(String movieName) {
+		this.movieName = movieName;
+	}
+
+	public String getTheaterName() {
+		return theaterName;
+	}
+
+	public void setTheaterName(String theaterName) {
+		this.theaterName = theaterName;
+	}
+
+	public Integer getNoOfTicketsAvailable() {
+		return noOfTicketsAvailable;
+	}
+
+	public void setNoOfTicketsAvailable(Integer noOfTicketsAvailable) {
+		this.noOfTicketsAvailable = noOfTicketsAvailable;
+	}
+
+	public String getTicketStatus() {
+		return ticketStatus;
+	}
+
+	public void setTicketStatus(String ticketStatus) {
+		this.ticketStatus = ticketStatus;
+	}
 	
 	
 	
