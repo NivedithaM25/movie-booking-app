@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Document(collection = "users")
+@Document(value = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
