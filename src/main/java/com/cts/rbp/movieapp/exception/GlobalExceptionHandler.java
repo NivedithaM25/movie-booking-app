@@ -15,4 +15,8 @@ public class GlobalExceptionHandler extends Exception{
 	}
 	
 
+		@ExceptionHandler
+		public ResponseEntity<String> inCaseOfSeatAlreadyBooked(Exception e){
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+		}
 }

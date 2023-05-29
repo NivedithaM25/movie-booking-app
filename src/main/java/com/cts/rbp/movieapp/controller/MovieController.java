@@ -2,12 +2,15 @@ package com.cts.rbp.movieapp.controller;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +38,7 @@ public class MovieController {
 	
 	
 	@GetMapping("/all")
-	@ApiOperation("Get all Movie available")
+	@ApiOperation("Search all Movie available")
 	public ResponseEntity<List<Movie>> getAllMovies(){
 		List<Movie> movieList = movieRepo.findAll();
 		if(movieList.isEmpty()) {
@@ -60,7 +63,7 @@ public class MovieController {
 	}
 	
 	@GetMapping("/movie/search/{movieName}")
-	@ApiOperation("Get movie details by movie name")
+	@ApiOperation("Search movie by movie name")
 	public ResponseEntity<List<Movie>> getByMovieName(@PathVariable("movieName") String movieName){
 		
 		List<Movie> movieList = movieService.findByMovieName(movieName);
@@ -72,16 +75,41 @@ public class MovieController {
 	}
 	
 	@GetMapping("/getAllBookedTickets/{movieName}")
-	@ApiOperation("Get all booked tickets by movie name")
+	@ApiOperation("Get all booked tickets by movie name (only Admin)")
 	public ResponseEntity<List<Ticket>> getALlBookedTickets(@PathVariable("movieName") String movieName){
 		
 		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
 	}
 	
+	@PostMapping("/{movieName}/add")
+	public ResponseEntity<String> bookTickets(@RequestBody Ticket ticket,@PathVariable("movieName") String movieName){
+		
+		return movieService.bookTickets(ticket,movieName);
+	}
+	
+	//Admin Access
+	@GetMapping("/getallbookedtickets/{movieName}")
+	@ApiOperation("get all booked tickets (Admin only)")
+	public ResponseEntity<List<Ticket>> getAllBookedTickets(@PathVariable String movieName){
+		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
+	}
+	
+	@PutMapping("/{movieName}/update/{ticketId}")
+	@ApiOperation("Update tickets(Admin only)")
+	public ResponseEntity<String> upadteTicketStatus(@PathVariable String movieName,@PathVariable ObjectId ticket){
+		return new ResponseEntity<String>(movieService.updateTicketStatus(movieName,ticket),HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{movieName}/delete")
+	@ApiOperation("delete movie(Admin only)")
+	public ResponseEntity<String>  deleteMovie(@PathVariable String movieName){
+		return  new ResponseEntity<String>(movieService.deleteTicket(movieName),HttpStatus.OK);
+	}
+	
 	@PostMapping("add/tickets")
 	public ResponseEntity addTickets(@RequestBody Ticket ticket){
 		
-		movieService.addTikcet(ticket);
+		movieService.saveTikcet(ticket);
 		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}
 }
