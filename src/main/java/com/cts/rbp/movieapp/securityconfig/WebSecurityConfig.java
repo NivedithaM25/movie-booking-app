@@ -21,9 +21,9 @@ import com.cts.rbp.movieapp.jwtconfig.AuthTokenFilter;
 import com.cts.rbp.movieapp.services.UserDetailsServiceImpl;
 
 @Configuration
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableWebSecurity
+public class WebSecurityConfig{
 
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
@@ -82,9 +82,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //            .build();
 //    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+//		http.cors().and().csrf().disable()
+//		//.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+//				.antMatchers("/api/v1.0/getallbookedtickets/{movieName}", "/api/v1.0/{movieName}/update/{ticketId}")
+//				.hasRole("Admin").antMatchers("/api/v1.0/moviebooking/all").hasAnyRole("GUEST", "Admin", "User")
+//				.antMatchers("/api/v1.0/moviebooking/login", "/api/v1.0/moviebooking/register", "/api-docs", "/**",
+//						"/swagger-ui.html", "/actuator/**")
+//				.permitAll().anyRequest().authenticated();
+//
+//		http.authenticationProvider(authenticationProvider());
+//
+//		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class).build();
+//	}
+	
+	
+	@Bean
+	public  SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable()
+		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/api/v1.0/getallbookedtickets/{movieName}", "/api/v1.0/{movieName}/update/{ticketId}")
 				.hasRole("Admin").antMatchers("/api/v1.0/moviebooking/all").hasAnyRole("GUEST", "Admin", "User")
@@ -94,7 +112,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.authenticationProvider(authenticationProvider());
 
-		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class).build();
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		return http.build();
 	}
 
 }

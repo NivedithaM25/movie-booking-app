@@ -21,7 +21,8 @@ import com.cts.rbp.movieapp.model.Ticket;
 import com.cts.rbp.movieapp.repository.MovieRepository;
 import com.cts.rbp.movieapp.services.MovieService;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+//import io.swagger.annotations.ApiOperation;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,8 @@ public class MovieController {
 	
 	
 	@GetMapping("/all")
-	@ApiOperation("Search all Movie available")
+	//@ApiOperation("Search all Movie available")
+	@Operation(summary = "Search all Movie available")
 	public ResponseEntity<List<Movie>> getAllMovies(){
 		List<Movie> movieList = movieRepo.findAll();
 		if(movieList.isEmpty()) {
@@ -51,7 +53,8 @@ public class MovieController {
 	}
 	
 	@GetMapping("/movie/search/{movieName}")
-	@ApiOperation("Search movie by movie name")
+	@Operation(summary = "Search movie by movie name")
+	//@ApiOperation("Search movie by movie name")
 	public ResponseEntity<List<Movie>> getByMovieName(@PathVariable("movieName") String movieName){
 		
 		List<Movie> movieList = movieService.findByMovieName(movieName);
@@ -70,6 +73,7 @@ public class MovieController {
 //	}
 	
 	@PostMapping("/{movieName}/add")
+	
 	public ResponseEntity<String> bookTickets(@RequestBody Ticket ticket,@PathVariable("movieName") String movieName){
 		
 		return movieService.bookTickets(ticket,movieName);
@@ -77,19 +81,19 @@ public class MovieController {
 	
 	//Admin Access
 	@GetMapping("/getallbookedtickets/{movieName}")
-	@ApiOperation("get all booked tickets (Admin only)")
+	//@ApiOperation("get all booked tickets (Admin only)")
 	public ResponseEntity<List<Ticket>> getAllBookedTickets(@PathVariable String movieName){
 		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
 	}
 	
 	@PutMapping("/{movieName}/update/{ticketId}")
-	@ApiOperation("Update tickets(Admin only)")
+	//@ApiOperation("Update tickets(Admin only)")
 	public ResponseEntity<String> upadteTicketStatus(@PathVariable String movieName,@PathVariable ObjectId ticket){
 		return new ResponseEntity<String>(movieService.updateTicketStatus(movieName,ticket),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{movieName}/delete")
-	@ApiOperation("delete movie(Admin only)")
+	//@ApiOperation("delete movie(Admin only)")
 	public ResponseEntity<String>  deleteMovie(@PathVariable String movieName){
 		return  new ResponseEntity<String>(movieService.deleteTicket(movieName),HttpStatus.OK);
 	}
