@@ -92,7 +92,7 @@ public class MovieService {
 
 	public String updateTicketStatus(String movieName, ObjectId ticket) {
 		List<Movie> movie=movieRepo.findByMovieName(movieName);
-		List<Ticket> tickets=ticketRepo.finBy_id(ticket);
+		List<Ticket> tickets=ticketRepo.findById(ticket);
 		
 		if(movie == null) {
 			throw new MoviesNotFound("Movie not found: "+movieName);

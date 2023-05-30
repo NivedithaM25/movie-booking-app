@@ -50,18 +50,6 @@ public class MovieController {
 		}
 	}
 	
-	@PostMapping("/add")
-	public ResponseEntity addMovie(@RequestBody Movie movie){
-		
-		List<Movie> movieList=movieService.getAllMovies();
-		
-		if(movieList.isEmpty()) {
-			
-		}
-		movieService.saveMovie(movie);
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
-	}
-	
 	@GetMapping("/movie/search/{movieName}")
 	@ApiOperation("Search movie by movie name")
 	public ResponseEntity<List<Movie>> getByMovieName(@PathVariable("movieName") String movieName){
@@ -74,12 +62,12 @@ public class MovieController {
 		return new ResponseEntity<>(movieList,HttpStatus.FOUND);
 	}
 	
-	@GetMapping("/getAllBookedTickets/{movieName}")
-	@ApiOperation("Get all booked tickets by movie name (only Admin)")
-	public ResponseEntity<List<Ticket>> getALlBookedTickets(@PathVariable("movieName") String movieName){
-		
-		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
-	}
+//	@GetMapping("/getAllBookedTickets/{movieName}")
+//	@ApiOperation("Get all booked tickets by movie name (only Admin)")
+//	public ResponseEntity<List<Ticket>> getALlBookedTickets(@PathVariable("movieName") String movieName){
+//		
+//		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
+//	}
 	
 	@PostMapping("/{movieName}/add")
 	public ResponseEntity<String> bookTickets(@RequestBody Ticket ticket,@PathVariable("movieName") String movieName){
@@ -106,10 +94,24 @@ public class MovieController {
 		return  new ResponseEntity<String>(movieService.deleteTicket(movieName),HttpStatus.OK);
 	}
 	
-	@PostMapping("add/tickets")
-	public ResponseEntity addTickets(@RequestBody Ticket ticket){
-		
-		movieService.saveTikcet(ticket);
-		return new ResponseEntity<>(HttpStatus.ACCEPTED);
-	}
+//	@PostMapping("add/tickets")
+//	public ResponseEntity addTickets(@RequestBody Ticket ticket){
+//		
+//		movieService.saveTikcet(ticket);
+//		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+//	}
+	
+//	@PostMapping("/add")
+//	public ResponseEntity addMovie(@RequestBody Movie movie){
+//		
+//		List<Movie> movieList=movieService.getAllMovies();
+//		
+//		if(movieList.isEmpty()) {
+//			
+//		}
+//		movieService.saveMovie(movie);
+//		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+//	}
+	
+	
 }

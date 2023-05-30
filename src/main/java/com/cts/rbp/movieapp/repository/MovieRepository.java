@@ -12,9 +12,14 @@ import com.cts.rbp.movieapp.model.Movie;
 
 public interface MovieRepository extends MongoRepository<Movie, String>{
 	
-	@Query()
+	@Query("{movieName:{$regex:?0, $options:'i'}}")
 	List<Movie> findByMovieName(String movieName);
 
+	@Query("{'movieName' : ?0,'theatreName' : ?1}")
 	List<Movie> findAvailableTickets(String movieName, String theatername);
+	
+	
+	 void deleteByMovieName(String movieName);
+	 
 
 }
