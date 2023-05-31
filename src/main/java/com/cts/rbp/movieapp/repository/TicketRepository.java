@@ -13,7 +13,7 @@ public interface TicketRepository extends MongoRepository<Ticket, String>{
 	
 	List<Ticket> findByMovieName(String movieName);
 
-	 @Query(value = "{'movieName' : ?0,'theatreName' : ?1}", fields = "{_id:0, seatNumber:1}")
+	 @Query(value = "{'movieName' : ?0,'theatreName' : ?1}", fields = "{id:0, seatNumber:1}")
 	List<Ticket> findSeats(String movieName, String theaterNmae);
 
 	List<Ticket> findById(ObjectId id);

@@ -18,7 +18,6 @@ public class Role {
 	private ERole name;
 
 	public Role(ERole name) {
-		super();
 		this.name = name;
 	}
 
@@ -37,7 +36,18 @@ public class Role {
 	public void setName(ERole name) {
 		this.name = name;
 	}
-	
+
+	public Role(String id, ERole name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+	public Role() {
+		super();
+	}
+
+		
 	
 	
 }

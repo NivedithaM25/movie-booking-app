@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.rbp.movieapp.exception.MoviesNotFound;
+import com.cts.rbp.movieapp.model.ERole;
 import com.cts.rbp.movieapp.model.Movie;
+import com.cts.rbp.movieapp.model.Role;
 import com.cts.rbp.movieapp.model.Ticket;
 import com.cts.rbp.movieapp.repository.MovieRepository;
+import com.cts.rbp.movieapp.repository.RoleRepository;
 import com.cts.rbp.movieapp.services.MovieService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 //import io.swagger.annotations.ApiOperation;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
@@ -39,6 +43,7 @@ public class MovieController {
 	
 	
 	@GetMapping("/all")
+	 @SecurityRequirement(name = "Bearer Authentication")
 	//@ApiOperation("Search all Movie available")
 	@Operation(summary = "View all movies")
 	public ResponseEntity<List<Movie>> getAllMovies(){
@@ -119,6 +124,16 @@ public class MovieController {
 //		movieService.saveMovie(movie);
 //		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 //	}
+	@Autowired
+	RoleRepository roleRepo;
 	
-	
+	@GetMapping("/addrole")
+	public ResponseEntity<?> addRoles(){
+		Role admin = new Role(ERole.ROLE_ADMIN);
+		Role user = new Role(ERole.ROLE_USER);
+
+		roleRepo.saveAll(List.of(admin,user));
+		
+		return new ResponseEntity(roleRepo.findAll(),HttpStatus.OK);
+	}
 }

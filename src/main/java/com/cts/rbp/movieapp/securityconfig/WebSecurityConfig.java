@@ -80,7 +80,7 @@ public class WebSecurityConfig{
 		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/api/v1.0/getallbookedtickets/{movieName}", "/api/v1.0/{movieName}/update/{ticketId}")
-				.hasRole("Admin").antMatchers("/api/v1.0/moviebooking/all").hasAnyRole("GUEST", "Admin", "User")
+				.hasRole("ADMIN").antMatchers("/api/v1.0/moviebooking/all").hasAnyRole("GUEST", "ADMIN", "USER")
 				.antMatchers("/api/v1.0/moviebooking/login", "/api/v1.0/moviebooking/register", "/api-docs", "/**",
 						"/swagger-ui.html", "/actuator/**")
 				.permitAll().anyRequest().authenticated();
