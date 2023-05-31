@@ -50,6 +50,12 @@ public class User {
 	
 	@DBRef
 	private Set<Role> roles = new HashSet<>();
+	
+	
+
+	public User() {
+		super();
+	}
 
 	public User(@NotBlank @Size(max = 20) String loginId, @NotBlank String firstName, @NotBlank String lastName,
 			@NotBlank @Email @Size(max = 50) String email, @NotBlank long contactNumber, @NotBlank String password,

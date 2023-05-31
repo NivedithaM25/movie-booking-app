@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.rbp.movieapp.jwtconfig.JwtUtils;
@@ -33,6 +34,7 @@ import com.cts.rbp.movieapp.services.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
+@RequestMapping("/api/v1.0/moviebooking")
 public class AuthController {
 
 	@Autowired

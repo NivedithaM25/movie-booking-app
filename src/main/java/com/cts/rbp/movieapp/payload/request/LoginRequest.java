@@ -19,6 +19,11 @@ public class LoginRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public LoginRequest(@NotBlank String loginId, @NotBlank String password) {
+		super();
+		this.loginId = loginId;
+		this.password = password;
+	}
 	
 	
 }
