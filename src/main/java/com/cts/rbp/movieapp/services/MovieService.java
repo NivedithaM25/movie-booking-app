@@ -36,7 +36,7 @@ public class MovieService {
 	}
 	
 	
-	public List<Movie> findByMovieName(String movieName) {
+	public List<Movie> getMovieByName(String movieName) {
 		
 		return movieRepo.findByMovieName(movieName);
 	}
@@ -63,7 +63,7 @@ public class MovieService {
 			saveTikcet(ticket);
 			//kafka implementation
 			
-			List<Movie> movies=findByMovieName(movieName);
+			List<Movie> movies=getMovieByName(movieName);
 			int available_tickets=0;
 			for(Movie movie:movies) {
 				available_tickets=movie.getNoOfTicketsAvailable()-ticket.getNoOfTickets();
@@ -80,13 +80,13 @@ public class MovieService {
 		
 	}
 
-	private List<Ticket> findSeats(String movieName, String theaterNmae) {
+	public List<Ticket> findSeats(String movieName, String theaterNmae) {
 			
 		return ticketRepo.findSeats(movieName,theaterNmae);
 	}
 	
 	
-	private List<Movie> findAvailableTickets(String movieName,String theatername){
+	public List<Movie> findAvailableTickets(String movieName,String theatername){
 		return movieRepo.findAvailableTickets(movieName,theatername);
 	}
 
@@ -127,8 +127,11 @@ public class MovieService {
 		return totaltickets;
 	}
 
-	public String deleteTicket(String movieName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	 public void deleteByMovieName(String movieName) {
+	        movieRepo.deleteByMovieName(movieName);
+	    }
+	
+	  public List<Movie> findByMovieName(String movieName) {
+	        return movieRepo.findByMovieName(movieName);
+	    }
 }

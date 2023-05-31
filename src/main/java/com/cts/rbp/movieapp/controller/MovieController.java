@@ -40,7 +40,7 @@ public class MovieController {
 	
 	@GetMapping("/all")
 	//@ApiOperation("Search all Movie available")
-	@Operation(summary = "Search all Movie available")
+	@Operation(summary = "View all movies")
 	public ResponseEntity<List<Movie>> getAllMovies(){
 		List<Movie> movieList = movieRepo.findAll();
 		if(movieList.isEmpty()) {
@@ -57,7 +57,7 @@ public class MovieController {
 	//@ApiOperation("Search movie by movie name")
 	public ResponseEntity<List<Movie>> getByMovieName(@PathVariable("movieName") String movieName){
 		
-		List<Movie> movieList = movieService.findByMovieName(movieName);
+		List<Movie> movieList = movieService.getMovieByName(movieName);
 		
 		if(movieList.isEmpty()) {
 			throw new MoviesNotFound("Movie not available");
@@ -65,37 +65,40 @@ public class MovieController {
 		return new ResponseEntity<>(movieList,HttpStatus.FOUND);
 	}
 	
-//	@GetMapping("/getAllBookedTickets/{movieName}")
-//	@ApiOperation("Get all booked tickets by movie name (only Admin)")
-//	public ResponseEntity<List<Ticket>> getALlBookedTickets(@PathVariable("movieName") String movieName){
-//		
-//		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
-//	}
 	
 	@PostMapping("/{movieName}/add")
-	
+	@Operation(summary="Book tickets for a movie")
 	public ResponseEntity<String> bookTickets(@RequestBody Ticket ticket,@PathVariable("movieName") String movieName){
 		
 		return movieService.bookTickets(ticket,movieName);
 	}
 	
-	//Admin Access
-	@GetMapping("/getallbookedtickets/{movieName}")
-	//@ApiOperation("get all booked tickets (Admin only)")
-	public ResponseEntity<List<Ticket>> getAllBookedTickets(@PathVariable String movieName){
-		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
-	}
+//	//Admin Access
+//	@GetMapping("/getallbookedtickets/{movieName}")
+//	//@ApiOperation("get all booked tickets (Admin only)")
+//	public ResponseEntity<List<Ticket>> getAllBookedTickets(@PathVariable String movieName){
+//		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
+//	}
 	
 	@PutMapping("/{movieName}/update/{ticketId}")
-	//@ApiOperation("Update tickets(Admin only)")
+	@Operation(summary="Update ticket status")
 	public ResponseEntity<String> upadteTicketStatus(@PathVariable String movieName,@PathVariable ObjectId ticket){
 		return new ResponseEntity<String>(movieService.updateTicketStatus(movieName,ticket),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{movieName}/delete")
+	@Operation(summary="delete movie")
 	//@ApiOperation("delete movie(Admin only)")
 	public ResponseEntity<String>  deleteMovie(@PathVariable String movieName){
-		return  new ResponseEntity<String>(movieService.deleteTicket(movieName),HttpStatus.OK);
+		 List<Movie> availableMovies = movieService.findByMovieName(movieName);
+	        if(availableMovies.isEmpty()){
+	            throw new MoviesNotFound("No movies Available with moviename "+ movieName);
+	        }
+	        else {
+	            movieService.deleteByMovieName(movieName);
+	           // kafkaTemplate.send(topic.name(),"Movie Deleted by the Admin. "+movieName+" is now not available");
+	            return new ResponseEntity<>("Movie deleted successfully",HttpStatus.OK);
+	        }
 	}
 	
 //	@PostMapping("add/tickets")

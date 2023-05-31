@@ -56,31 +56,6 @@ public class WebSecurityConfig{
 		return new BCryptPasswordEncoder();
 	}
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        // Configure your security rules here
-//        return http
-//            .cors().and().csrf().disable()
-//            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//            .authorizeRequests()
-//                .antMatchers("/api/v1.0/getallbookedtickets/{movieName}","/api/v1.0/{movieName}/update/{ticketId}")
-//                    .hasRole("Admin").anyRequest().authenticated().and()
-//                .authorizeRequests()
-//                    .antMatchers("/api/v1.0/moviebooking/all").hasRole("GUEST").anyRequest().authenticated().and()
-//                .authorizeRequests()
-//                    .antMatchers("/api/v1.0/moviebooking/login",
-//                        "/api/v1.0/moviebooking/register",
-//                        "/api-docs",
-//                        "/**",
-//                        "/swagger-ui.html",
-//                        "/actuator/**").permitAll()
-//                .anyRequest().authenticated()
-//            .and()
-//                .authenticationProvider(authenticationProvider())
-//                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-//            .build();
-//    }
 
 //	@Override
 //	protected void configure(HttpSecurity http) throws Exception {

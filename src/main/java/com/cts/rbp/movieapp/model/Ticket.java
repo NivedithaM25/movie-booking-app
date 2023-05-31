@@ -1,5 +1,6 @@
 package com.cts.rbp.movieapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -80,6 +81,11 @@ public class Ticket {
 
 	public Ticket() {
 		super();
+	}
+
+	public Ticket(String string, String movieName2, String thaterName2, int noOfTickets2,
+			ArrayList<String> seatNumber2) {
+		// TODO Auto-generated constructor stub
 	}
 	
 	
