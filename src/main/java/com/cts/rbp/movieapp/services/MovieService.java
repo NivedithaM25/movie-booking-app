@@ -58,14 +58,17 @@ public class MovieService {
 	}
 
 	public ResponseEntity<String> bookTickets(Ticket ticket, String movieName) {
-		List<Ticket> allTickets= findSeats(movieName,ticket.getThaterName());
-		for(Ticket each:allTickets) {
-			for(int i=0;i<ticket.getNoOfTickets();i++) {
-				if(each.getSeatNumber().contains(ticket.getSeatNumber().get(i)));
-					throw new SeatAlreadyBooked("Seat Number "+ticket.getSeatNumber().get(i)+" is already booked!");
-			}
-		}
-		
+		  List<Ticket> allTickets =findSeats(movieName,ticket.getThaterName());
+	        for(Ticket each : allTickets){
+	            for(int i = 0; i < ticket.getNoOfTickets(); i++){
+	                if(each.getSeatNumber().contains(ticket.getSeatNumber().get(i))){
+	                    //log.debug("seat is already booked");
+	                    throw new SeatAlreadyBooked("Seat number "+ticket.getSeatNumber().get(i)+" is already booked");
+	                }
+	            }
+	        }
+	        
+	        
 		if(findAvailableTickets(movieName, ticket.getThaterName()).get(0).getNoOfTicketsAvailable() >= 
 				ticket.getNoOfTickets()) {
 			saveTikcet(ticket);
@@ -91,10 +94,9 @@ public class MovieService {
 		
 	}
 
-	public List<Ticket> findSeats(String movieName, String theaterNmae) {
-			
-		return ticketRepo.findSeats(movieName,theaterNmae);
-	}
+	 public List<Ticket> findSeats(String movieName, String theatreName) {
+	        return ticketRepo.findSeats(movieName,theatreName);
+	    }
 	
 	
 	public List<Movie> findAvailableTickets(String movieName,String theatername){
