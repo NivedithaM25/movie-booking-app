@@ -121,16 +121,16 @@ public class MovieController {
 		return movieService.bookTickets(ticket,movieName);
 	}
 	
-//	//Admin Access
-//	@GetMapping("/getallbookedtickets/{movieName}")
-//	//@ApiOperation("get all booked tickets (Admin only)")
-//	public ResponseEntity<List<Ticket>> getAllBookedTickets(@PathVariable String movieName){
-//		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
-//	}
+	//Admin Access
+	@GetMapping("/getallbookedtickets/{movieName}")
+	//@ApiOperation("get all booked tickets (Admin only)")
+	public ResponseEntity<List<Ticket>> getAllBookedTickets(@PathVariable String movieName){
+		return new ResponseEntity<>(movieService.getALlBookedTickets(movieName),HttpStatus.OK);
+	}
 	
-	@PutMapping("/{movieName}/update/{ticketId}")
+	@PutMapping("/{movieName}/update")
 	@Operation(summary="Update ticket status")
-	public ResponseEntity<String> upadteTicketStatus(@PathVariable String movieName,@PathVariable ObjectId ticket){
+	public ResponseEntity<String> upadteTicketStatus(@PathVariable String movieName,@RequestBody ObjectId ticket){
 		return new ResponseEntity<String>(movieService.updateTicketStatus(movieName,ticket),HttpStatus.OK);
 	}
 	
@@ -156,17 +156,17 @@ public class MovieController {
 //		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 //	}
 	
-//	@PostMapping("/add")
-//	public ResponseEntity addMovie(@RequestBody Movie movie){
-//		
-//		List<Movie> movieList=movieService.getAllMovies();
-//		
-//		if(movieList.isEmpty()) {
-//			
-//		}
-//		movieService.saveMovie(movie);
-//		return new ResponseEntity<>(HttpStatus.ACCEPTED);
-//	}
+	@PostMapping("/add")
+	public ResponseEntity addMovie(@RequestBody Movie movie){
+		
+		List<Movie> movieList=movieService.getAllMovies();
+		
+		if(movieList.isEmpty()) {
+			
+		}
+		movieService.saveMovie(movie);
+		return new ResponseEntity<>(HttpStatus.ACCEPTED);
+	}
 	@Autowired
 	RoleRepository roleRepo;
 	

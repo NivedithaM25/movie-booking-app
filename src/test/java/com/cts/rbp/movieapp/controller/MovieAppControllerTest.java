@@ -98,7 +98,7 @@ public class MovieAppControllerTest {
         // Mock the ticket list that will be returned by the service method
         authenticateAdmin();
         List<Ticket> ticketList = new ArrayList<>();
-        ticketList.add(new Ticket("chandan","The Matrix", "Screen 1", 2, new ArrayList<String>(List.of("a1","a2"))));
+        ticketList.add(new Ticket("The Matrix", "Screen 1", 2, new ArrayList<String>(List.of("a1","a2"))));
         when(movieService.getALlBookedTickets("Movie1")).thenReturn(ticketList);
 
         // Perform GET request to endpoint

@@ -76,7 +76,7 @@ public class MovieServiceTest {
     void findSeats() {
         // Set up mock data
         List<Ticket> tickets = new ArrayList<>();
-        tickets.add(new Ticket("chandan","The Matrix", "Screen 1", 2, new ArrayList<String>(List.of("a1","a2"))));
+        tickets.add(new Ticket("The Matrix", "Screen 1", 2, new ArrayList<String>(List.of("a1","a2"))));
         when(ticketRepository.findSeats("The Matrix", "Screen 1")).thenReturn(tickets);
 
         // Call the method being tested
@@ -102,7 +102,7 @@ public class MovieServiceTest {
 
     @Test
     void testSaveTicket() {
-        Ticket expectedTicket = new Ticket("chandan","The Matrix", "Screen 1", 2, new ArrayList<String>(List.of("a1","a2")));
+        Ticket expectedTicket = new Ticket("The Matrix", "Screen 1", 2, new ArrayList<String>(List.of("a1","a2")));
         movieService.saveTikcet(expectedTicket);
         verify(ticketRepository, times(1)).save(expectedTicket);
     }
@@ -118,7 +118,7 @@ public class MovieServiceTest {
     void testGetAllBookedTickets() {
         String movieName = "Avengers: Endgame";
         List<Ticket> expectedTickets = Arrays.asList(
-                new Ticket("chandan","The Matrix", "Screen 1", 2, new ArrayList<String>(List.of("a1","a2")))
+                new Ticket("The Matrix", "Screen 1", 2, new ArrayList<String>(List.of("a1","a2")))
         );
         when(ticketRepository.findByMovieName(movieName)).thenReturn(expectedTickets);
         List<Ticket> actualTickets = movieService.getALlBookedTickets(movieName);

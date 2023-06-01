@@ -10,16 +10,21 @@ import org.springframework.stereotype.Repository;
 import com.cts.rbp.movieapp.model.Movie;
 
 
+@Repository
 public interface MovieRepository extends MongoRepository<Movie, String>{
 	
 	@Query("{movieName:{$regex:?0, $options:'i'}}")
 	List<Movie> findByMovieName(String movieName);
 
-	@Query("{'movieName' : ?0,'theatreName' : ?1}")
+	@Query("{movieName : ?0,theaterName : ?1}")
 	List<Movie> findAvailableTickets(String movieName, String theatername);
 	
 	
 	 void deleteByMovieName(String movieName);
+	 
+	 
+
+	//Optional<Movie> findByMovieNameAndTheaterName(String movieName, String theaterName);
 	 
 
 }

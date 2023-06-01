@@ -19,14 +19,14 @@ public class Ticket {
 	private ObjectId id;
 	
 	private String movieName;
-	private String thaterName;
+	private String theaterName;
 	private int noOfTickets;
 	private List<String> seatNumber;
 	
-	public Ticket(ObjectId id, String movieName, String thaterName, int noOfTickets, List<String> seatNumber) {
+	public Ticket(ObjectId id, String movieName, String theaterName, int noOfTickets, List<String> seatNumber) {
 		this.id = id;
 		this.movieName = movieName;
-		this.thaterName = thaterName;
+		this.theaterName = theaterName;
 		this.noOfTickets = noOfTickets;
 		this.seatNumber = seatNumber;
 	}
@@ -47,12 +47,12 @@ public class Ticket {
 		this.movieName = movieName;
 	}
 
-	public String getThaterName() {
-		return thaterName;
+	public String getTheaterName() {
+		return theaterName;
 	}
 
-	public void setThaterName(String thaterName) {
-		this.thaterName = thaterName;
+	public void setTheaterName(String theaterName) {
+		this.theaterName = theaterName;
 	}
 
 	public int getNoOfTickets() {
@@ -74,7 +74,7 @@ public class Ticket {
 	public Ticket(String movieName, String thaterName, int noOfTickets, List<String> seatNumber) {
 		super();
 		this.movieName = movieName;
-		this.thaterName = thaterName;
+		this.theaterName = thaterName;
 		this.noOfTickets = noOfTickets;
 		this.seatNumber = seatNumber;
 	}
@@ -83,10 +83,7 @@ public class Ticket {
 		super();
 	}
 
-	public Ticket(String string, String movieName2, String thaterName2, int noOfTickets2,
-			ArrayList<String> seatNumber2) {
-		// TODO Auto-generated constructor stub
-	}
+
 	
 	
 }
