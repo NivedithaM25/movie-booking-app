@@ -2,10 +2,12 @@ package com.cts.rbp.movieapp.controller;
 
 import java.util.List;
 
+import org.apache.kafka.clients.admin.NewTopic;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +43,12 @@ public class MovieController {
 	@Autowired
 	private MovieRepository movieRepo;
 	
+	@Autowired
+    private KafkaTemplate<String, Object> kafkaTemplate;
 	
+	 @Autowired
+	    private NewTopic topic;
+	 
 	@GetMapping("/all")
 	 @SecurityRequirement(name = "Bearer Authentication")
 	//@ApiOperation("Search all Movie available")
@@ -101,7 +108,7 @@ public class MovieController {
 	        }
 	        else {
 	            movieService.deleteByMovieName(movieName);
-	           // kafkaTemplate.send(topic.name(),"Movie Deleted by the Admin. "+movieName+" is now not available");
+	           kafkaTemplate.send(topic.name(),"Movie Deleted by the Admin. "+movieName+" is now not available");
 	            return new ResponseEntity<>("Movie deleted successfully",HttpStatus.OK);
 	        }
 	}

@@ -3,10 +3,12 @@ package com.cts.rbp.movieapp.services;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.kafka.clients.admin.NewTopic;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,12 @@ public class MovieService {
 	
 	@Autowired
 	private TicketRepository ticketRepo;
+	
+	   @Autowired
+	    private KafkaTemplate<String, Object> kafkaTemplate;
+
+	    @Autowired
+	    private NewTopic topic;
 	
 	public List<Movie> getAllMovies(){
 		return movieRepo.findAll();
@@ -62,6 +70,9 @@ public class MovieService {
 				ticket.getNoOfTickets()) {
 			saveTikcet(ticket);
 			//kafka implementation
+			
+			 kafkaTemplate.send(topic.name(),"Movie ticket booked. " +
+	                    "Booking Details are: "+ ticket);
 			
 			List<Movie> movies=getMovieByName(movieName);
 			int available_tickets=0;
@@ -113,7 +124,7 @@ public class MovieService {
 		}
 		
 		//kafka impl
-		
+		 kafkaTemplate.send(topic.name(),"tickets status upadated by the Admin for movie "+movieName);
 		return "Ticket status updated successfully";
 	}
 
