@@ -13,7 +13,7 @@ import com.cts.rbp.movieapp.model.Movie;
 @Repository
 public interface MovieRepository extends MongoRepository<Movie, String>{
 	
-	@Query("{movieName:{$regex:?0, $options:'i'}}")
+	@Query("{$and:[{movieName:{$regex:?0, $options:'i'}},{movieName:{$regex:'^?0$',$options:'i'}}]}")
 	List<Movie> findByMovieName(String movieName);
 
 	@Query("{movieName : ?0,theaterName : ?1}")
@@ -23,8 +23,8 @@ public interface MovieRepository extends MongoRepository<Movie, String>{
 	 void deleteByMovieName(String movieName);
 	 
 	 
-
-	//Optional<Movie> findByMovieNameAndTheaterName(String movieName, String theaterName);
+	@Query("{movieName : ?0,theaterName : ?1}")
+	Movie findByMovieNameAndTheaterName(String movieName, String theaterName);
 	 
 
 }

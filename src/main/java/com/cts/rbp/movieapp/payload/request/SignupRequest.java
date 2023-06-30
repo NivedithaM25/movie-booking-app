@@ -30,6 +30,9 @@ public class SignupRequest {
 	    @NotBlank
 	    @Size(min = 6, max = 40)
 	    private String password;
+	    @NotBlank
+	    @Size(min = 6, max = 40)
+	    private String confirmPassword;
 
 	    public String getEmail() {
 			return email;
@@ -85,6 +88,14 @@ public class SignupRequest {
 
 		public void setLastName(String lastName) {
 			this.lastName = lastName;
+		}
+
+		public String getConfirmPassword() {
+			return confirmPassword;
+		}
+
+		public void setConfirmPassword(String confirmPassword) {
+			this.confirmPassword = confirmPassword;
 		}
 	    
 	    

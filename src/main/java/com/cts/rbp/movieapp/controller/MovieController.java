@@ -1,5 +1,7 @@
 package com.cts.rbp.movieapp.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1.0/moviebooking")
+@CrossOrigin(origins="http://localhost:3000")
 public class MovieController {
 
 	@Autowired
@@ -96,7 +100,7 @@ public class MovieController {
 			throw new MoviesNotFound("No Movies Found");
 		}
 		else {
-			return new ResponseEntity<>(movieList,HttpStatus.FOUND);
+			return new ResponseEntity<>(movieList,HttpStatus.OK);
 		}
 	}
 	
@@ -110,8 +114,9 @@ public class MovieController {
 		if(movieList.isEmpty()) {
 			throw new MoviesNotFound("Movie not available");
 		}
-		return new ResponseEntity<>(movieList,HttpStatus.FOUND);
+		return new ResponseEntity<>(movieList,HttpStatus.OK);
 	}
+	
 	
 	
 	@PostMapping("/{movieName}/add")
@@ -144,7 +149,7 @@ public class MovieController {
 	        }
 	        else {
 	            movieService.deleteByMovieName(movieName);
-	           //kafkaTemplate.send(topic.name(),"Movie Deleted by the Admin. "+movieName+" is now not available");
+	           kafkaTemplate.send(topic.name(),"Movie Deleted by the Admin. "+movieName+" is now not available");
 	            return new ResponseEntity<>("Movie deleted successfully",HttpStatus.OK);
 	        }
 	}
@@ -179,4 +184,62 @@ public class MovieController {
 		
 		return new ResponseEntity(roleRepo.findAll(),HttpStatus.OK);
 	}
+	
+	@GetMapping("/seats/{totalSeats}")
+    public List<String> seats(@PathVariable int totalSeats){
+        //log.debug("SEATS Array");
+        List<String> seats = new ArrayList<String>();
+        
+        List<String> a = Arrays.asList("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10");
+        List<String> b = Arrays.asList("B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10");
+        List<String> c = Arrays.asList("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10");
+        List<String> d = Arrays.asList("D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10");
+        List<String> e = Arrays.asList("E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10");
+        List<String> f = Arrays.asList("F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10");
+        List<String> g = Arrays.asList("G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10");
+        List<String> h = Arrays.asList("H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H10");
+        List<String> i = Arrays.asList("I1", "I2", "I3", "I4", "I5", "I6", "I7", "I8", "I9", "I10");
+        List<String> j = Arrays.asList("J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8", "J9", "J10");
+        List<String> k = Arrays.asList("K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K10");
+        List<String> l = Arrays.asList("L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L9", "L10");
+        List<String> m = Arrays.asList("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10");
+        List<String> n = Arrays.asList("D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10");
+        List<String> o = Arrays.asList("E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10");
+        List<String> p = Arrays.asList("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10");
+        List<String> q = Arrays.asList("B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10");
+        List<String> r = Arrays.asList("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10");
+        List<String> s = Arrays.asList("D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10");
+        List<String> t = Arrays.asList("E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10");
+        List<String> u = Arrays.asList("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10");
+        List<String> v = Arrays.asList("B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10");
+        List<String> w = Arrays.asList("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10");
+        List<String> x = Arrays.asList("D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10");
+        List<String> y = Arrays.asList("E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10");
+        List<List<String>> llist = Arrays.asList(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y);
+        
+                
+        int totalRows = totalSeats / 10;
+        
+        for(int row=0; row<10; ++row) {
+        	for(int col=0; col<totalRows; ++col) {
+        		seats.add(llist.get(col).get(row));
+        	}
+        }
+        return seats;
+    }
+
+    
+    
+    @GetMapping("/bookedSeats/{movieName}/{theaterName}")
+    public List<String> bookedSeats(@PathVariable String movieName, @PathVariable String theaterName ){
+        //log.debug("Getting Booked Seats");
+        List<String> bookedSeats = new ArrayList<String>();
+        
+        List<Ticket> allTickets = movieService.findSeats(movieName, theaterName);
+        for(Ticket each : allTickets){ 
+                bookedSeats.addAll(each.getSeatNumber());
+        }
+        return bookedSeats;
+    }
+	
 }

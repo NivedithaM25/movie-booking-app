@@ -63,15 +63,6 @@ public class MovieService {
 
 	public ResponseEntity<String> bookTickets(Ticket ticket, String movieName) {
 		List<Ticket> allTickets = findSeats(movieName, ticket.getTheaterName());
-//	        for(Ticket each : allTickets){
-//	            for(int i = 0; i < ticket.getNoOfTickets(); i++){
-//	                if(each.getSeatNumber().contains(ticket.getSeatNumber().get(i))){
-//	                    //log.debug("seat is already booked");
-//	                    throw new SeatAlreadyBooked("Seat number "+ticket.getSeatNumber().get(i)+" is already booked");
-//	                }
-//	            }
-//	        }
-
 		List<String> seatNumbers = ticket.getSeatNumber();
 		int numTickets = ticket.getNoOfTickets();
 		if (seatNumbers.size() < numTickets) {
@@ -85,33 +76,50 @@ public class MovieService {
 				}
 			}
 		}
-		logger.info(movieName + " " + ticket.getTheaterName());
+		// logger.info(movieName + " " + ticket.getTheaterName());
 		// Movie availableTickets=findMovieByMovieNameAndTheatreName(movieName,
 		// ticket.getMovieName());
-		
-		logger.info(findAvailableTickets(movieName, ticket.getTheaterName()).toString());
+
+		// logger.info(findAvailableTickets(movieName,
+		// ticket.getTheaterName()).toString());
 		int availableTickets = findAvailableTickets(movieName, ticket.getTheaterName()).get(0)
 				.getNoOfTicketsAvailable();
-		
-//		if((findAvailableTickets(movieName, ticket.getThaterName()).get(0).getNoOfTicketsAvailable()) >= 
-//				ticket.getNoOfTickets()) {
+
 		if (availableTickets >= ticket.getNoOfTickets()) {
 
 			saveTikcet(ticket);
-			//kafkaTemplate.send(topic.name(), "Movie ticket booked. " + "Booking Details are: " + ticket);
-
-			List<Movie> movies = getMovieByName(movieName);
-			int available_tickets = 0;
-			for (Movie movie : movies) {
-				available_tickets = movie.getNoOfTicketsAvailable() - ticket.getNoOfTickets();
-				movie.setNoOfTicketsAvailable(available_tickets);
-				saveMovie(movie);
-			}
-
+			kafkaTemplate.send(topic.name(), "Movie ticket booked. " + "Booking Details are: " + ticket);
+			Movie movies = findMovieByMovieNameAndTheatreName(movieName, ticket.getTheaterName());
+			
+			movies.setNoOfTicketsAvailable(movies.getNoOfTicketsAvailable() - ticket.getNoOfTickets());
+			movies.setTicketStatus(updateTicketStatus(movies));
+			saveMovie(movies);
 			return new ResponseEntity<>("Ticket Booked Successfully with seat number " + ticket.getSeatNumber(),
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>("All Tickets Sold out", HttpStatus.OK);
+		}
+
+	}
+
+	public String updateTicketStatus(Movie movie) {
+
+		if (movie == null) {
+			throw new MoviesNotFound("Movie not found: " + movie.getMovieName());
+		}
+
+		List<Ticket> ticketList = ticketRepo.findByMovieNameAndTheaterName(movie.getMovieName(), movie.getTheaterName());
+		int ticketsBooked = 0;
+		for (Ticket ticket : ticketList) {
+			ticketsBooked = ticketsBooked + ticket.getNoOfTickets();
+		}
+
+		if (movie.getNoOfTicketsAvailable() == 0) {
+			return "SOLD OUT";
+		} else if (ticketsBooked >= movie.getNoOfTicketsAvailable()) {
+			return "BOOK ASAP";
+		} else {
+			return "Available";
 		}
 
 	}
@@ -124,9 +132,9 @@ public class MovieService {
 		return movieRepo.findAvailableTickets(movieName, theatername);
 	}
 
-//	public Movie findMovieByMovieNameAndTheatreName(String movieName,String theatername){
-//		return movieRepo.findByMovieNameAndTheaterName(movieName,theatername).orElse(null);
-//	}
+	public Movie findMovieByMovieNameAndTheatreName(String movieName, String theatername) {
+		return movieRepo.findByMovieNameAndTheaterName(movieName, theatername);
+	}
 
 	public String updateTicketStatus(String movieName, ObjectId ticket) {
 		List<Movie> movie = movieRepo.findByMovieName(movieName);
@@ -139,23 +147,36 @@ public class MovieService {
 			throw new NoSuchElementException("Ticket Not Found: " + ticket);
 		}
 
-		int ticketsBooked = getTotalNoTicketz(movieName);
-		for (Movie movies : movie) {
-			if (ticketsBooked >= movies.getNoOfTicketsAvailable()) {
-				movies.setTicketStatus("SOLD OUT");
-			} else {
-				movies.setTicketStatus("BOOK AS SOON AS POSSIBLE");
-			}
+		int ticketsBooked = getTotalNoTickets(movieName);
 
+		for (Movie movies : movie) {
+			// log.info("No. of Tickets available- " +movies.getNoOfTicketsAvailable());
+			if (movies.getNoOfTicketsAvailable() == 0) {
+				movies.setTicketStatus("SOLD OUT");
+			} else if (ticketsBooked >= movies.getNoOfTicketsAvailable()) {
+				movies.setTicketStatus("BOOK ASAP");
+			} else {
+				movies.setTicketStatus("Available");
+			}
 			saveMovie(movies);
 		}
 
+//		for (Movie movies : movie) {
+//			if (ticketsBooked >= movies.getNoOfTicketsAvailable()) {
+//				movies.setTicketStatus("SOLD OUT");
+//			} else {
+//				movies.setTicketStatus("BOOK AS SOON AS POSSIBLE");
+//			}
+//
+//			saveMovie(movies);
+//		}
+
 		// kafka impl
-		//kafkaTemplate.send(topic.name(), "tickets status upadated by the Admin for movie " + movieName);
+		 kafkaTemplate.send(topic.name(), "tickets status upadated by the Admin for movie "+ movieName);
 		return "Ticket status updated successfully";
 	}
 
-	private int getTotalNoTicketz(String movieName) {
+	private int getTotalNoTickets(String movieName) {
 		List<Ticket> tickets = ticketRepo.findByMovieName(movieName);
 		int totaltickets = 0;
 		for (Ticket ticket : tickets) {
